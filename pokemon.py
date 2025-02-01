@@ -4,16 +4,29 @@ import sys
 from info import leader_pokemon, leaders, type_effectiveness
 
 
+class bcolors:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
+
 def reset_terminal():
     os.system("cls" if os.name == "nt" else "clear")
     print(
-        f""" {"\033[96m"}
+        f""" {bcolors.OKCYAN}
   _____      _                                _______                     ____        _ _     _           
  |  __ \    | |                              |__   __|                   |  _ \      (_) |   | |          
  | |__) |__ | | _____ _ __ ___   ___  _ __      | | ___  __ _ _ __ ___   | |_) |_   _ _| | __| | ___ _ __ 
  |  ___/ _ \| |/ / _ \ '_ ` _ \ / _ \| '_ \     | |/ _ \/ _` | '_ ` _ \  |  _ <| | | | | |/ _` |/ _ \ '__|
  | |  | (_) |   <  __/ | | | | | (_) | | | |    | |  __/ (_| | | | | | | | |_) | |_| | | | (_| |  __/ |   
- |_|   \___/|_|\_\___|_| |_| |_|\___/|_| |_|    |_|\___|\__,_|_| |_| |_| |____/ \__,_|_|_|\__,_|\___|_| {"\033[0m"}  
+ |_|   \___/|_|\_\___|_| |_| |_|\___/|_| |_|    |_|\___|\__,_|_| |_| |_| |____/ \__,_|_|_|\__,_|\___|_|  
+ {bcolors.ENDC}
 """
     )
 
@@ -134,7 +147,6 @@ def analyze_team_coverage(pokemon_team):
 def main():
     while True:
         reset_terminal()
-        os.system("color")
 
         selection = 0
         pokemon_team_input = ""
@@ -143,7 +155,7 @@ def main():
             prev_pokemon_team = f.read()
             pokemon_list = prev_pokemon_team.split(",")
             print(
-                f"1. Load previous team: {" | ".join([pokemon.capitalize() for pokemon in pokemon_list])}"
+                f"1. Load previous team: {' | '.join([pokemon.capitalize() for pokemon in pokemon_list])}"
             )
             print(f"2. Enter new team")
             print(f"3. Exit")
@@ -198,11 +210,11 @@ def main():
 
             reset_terminal()
             print(
-                f"{"\033[92m"}----------------------------------------------------------"
+                f"{bcolors.OKGREEN}----------------------------------------------------------"
             )
             print("         Your Effectiveness / Their Effectiveness")
             print(
-                f"----------------------------------------------------------{"\033[0m"}\n"
+                f"----------------------------------------------------------{bcolors.ENDC}\n"
             )
 
             for leader, pokemon_list in sorted_leaders.items():
@@ -234,10 +246,10 @@ def main():
                 if len(trouble_pokemon):
                     team_weaknesses, _ = analyze_team_resistance(trouble_pokemon)
                     print(
-                        f"{"\033[91m"}No pokemon in your team is strong against {", ".join([pokemon.name.capitalize() for pokemon in trouble_pokemon])}"
+                        f"{bcolors.FAIL}No pokemon in your team is strong against {', '.join([pokemon.name.capitalize() for pokemon in trouble_pokemon])}"
                     )
                     print(
-                        f"Consider adding a pokemon with a {", ".join(team_weaknesses.keys())} move{"\033[0m"}"
+                        f"Consider adding a pokemon with a {', '.join(team_weaknesses.keys())} move{bcolors.ENDC}"
                     )
                 print("\n")
 
@@ -252,4 +264,5 @@ def main():
 
 
 if __name__ == "__main__":
+    os.system("color")
     main()
